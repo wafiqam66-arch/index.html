@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Kamu yang Paling Aku Sayang 💕</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome untuk Icon Imut -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Font Cute & Modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti untuk Efek Perayaan -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
+            overflow-x: hidden;
+        }
+
+        .font-cute {
+            font-family: 'Fredoka', cursive;
+        }
+
+        /* Floating Hearts Background Animation */
+        .heart-particle {
+            position: fixed;
+            color: rgba(255, 105, 180, 0.6);
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp 6s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.5) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Pulse Heart Animation */
+        .pulse-heart {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px rgba(238, 156, 167, 0.3);
+        }
+
+        /* Cursor Custom Effect */
+        .glow-button {
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 20px rgba(244, 114, 182, 0.8);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 relative select-none">
+
+    <div id="heartContainer" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <div class="fixed top-3 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-pink-200 z-50 text-xs sm:text-sm text-pink-600 flex items-center gap-2 max-w-[90%] text-center">
+        <i class="fa-solid fa-code text-pink-500"></i>
+        <span><b>Petunjuk VS Code:</b> Tekan <code class="bg-pink-100 px-1 py-0.5 rounded text-pink-700">Alt + L, Alt + O</code> atau Klik Kanan file <i>index.html</i> &rarr; Select <b>Open with Live Server</b>.</span>
+    </div>
+
+    <main class="relative z-10 w-full max-w-md glass-card rounded-3xl p-6 sm:p-8 text-center mt-12 transition-all duration-500">
+        
+        <!-- Header GIF / Cute Illustration -->
+        <div class="relative w-32 h-32 mx-auto mb-4">
+            <img id="cuteGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z2MXQ0OWE2bXg2dndvODNiaTJxczUzOTJyb3pndWJwbzBsdDRxciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L3X9GvkiP49lh3n6yf/giphy.gif" alt="Cute Bear" class="w-full h-full object-cover rounded-full shadow-md border-4 border-white">
+            <div class="absolute -bottom-2 -right-2 bg-pink-500 text-white p-2 rounded-full shadow pulse-heart">
+                <i class="fa-solid fa-heart text-lg"></i>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-2xl sm:text-3xl font-bold font-cute text-pink-600 mb-3">
+            Halo Manis! ✨
+        </h1>
+
+        <!-- Typewriter Text Container -->
+        <div class="min-h-[80px] flex items-center justify-center mb-6">
+            <p id="typewriterText" class="text-gray-700 font-medium text-base sm:text-lg leading-relaxed italic">
+                <!-- Text will be typed dynamically via JavaScript -->
+            </p>
+        </div>
+
+        <!-- Question Title -->
+        <div id="questionBox" class="space-y-4">
+            <p class="font-cute text-xl text-pink-500 font-semibold">
+                Aku mau tanya deh... Kamu sayang banget nggak sama aku? 🥺
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center justify-center gap-4 pt-2 relative min-h-[60px]" id="buttonContainer">
+                <!-- Mau / Sayang Button -->
+                <button onclick="handleYesClick()" class="glow-button bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg flex items-center gap-2 transform active:scale-95 transition-all">
+                    <i class="fa-solid fa-heart"></i> Sayang Banget!
+                </button>
+
+                <!-- Enggak / Runaway Button -->
+                <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()" class="bg-gray-200 text-gray-600 font-bold py-3 px-6 rounded-full text-base shadow transition-all duration-200 hover:bg-gray-300">
+                    Enggak 😜
+                </button>
+            </div>
+        </div>
+
+        <div id="secretSection" class="hidden space-y-4 mt-4 animate-fade-in">
+            <div class="bg-pink-50 p-4 rounded-2xl border border-pink-200 text-pink-700 text-sm leading-relaxed text-left space-y-2">
+                <p class="font-bold font-cute text-pink-600 text-base"><i class="fa-solid fa-envelope-open-heart"></i> Catatan Rahasia Buat Kamu:</p>
+                <p>1. Makasih ya udah selalu sabar dan bikin hari-hariku jadi lebih berwarna ✨</p>
+                <p>2. Senyuman kamu itu alasan paling ampuh buat bikin hariku bahagia! 🥰</p>
+                <p>3. Pokoknya jangan galau-galau lagi, kan ada aku yang selalu sayang kamu 💕</p>
+            </div>
+
+            <button onclick="playMusicAndLove()" class="w-full glow-button bg-gradient-to-r from-pink-400 to-rose-400 text-white font-bold py-3 rounded-2xl shadow-md flex items-center justify-center gap-2">
+                <i class="fa-solid fa-music"></i> Buka Kejutan Musik & Cinta 🎵
+            </button>
+        </div>
+
+    </main>
+
+    <div id="loveModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-11/12 text-center shadow-2xl transform scale-90 transition-transform duration-300" id="modalCard">
+            <div class="text-5xl text-pink-500 mb-3 pulse-heart">
+                <i class="fa-solid fa-heart-circle-check"></i>
+            </div>
+            <h2 class="text-2xl font-bold font-cute text-pink-600 mb-2">Yeay! Aku Juga Sayang Kamu! ❤️</h2>
+            <p class="text-gray-600 text-sm mb-6 leading-relaxed">
+                Janji yaa jangan ditinggalin akunya! Kita bakal terus bareng-bareng bahagia selamanya 🌸🥰
+            </p>
+            <button onclick="closeModal()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 rounded-full shadow-lg transition-all">
+                I Love You Too! 😘
+            </button>
+        </div>
+    </div>
+
+    <!-- Background Audio (Cute Chill / Romantic vibe) -->
+    <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=sweet-love-111664.mp3"></audio>
+
+    <script>
+        const messages = [
+            "Hai bidadari tercantikku... 🥰",
+            "Tahu nggak? Setiap detik mikirin kamu itu selalu bikin aku senyum-senyum sendiri... ✨",
+            "Kamu itu kaya gula, manis banget dan bikin aku kecanduan mencintai kamu! 💕"
+        ];
+        
+        let messageIndex = 0;
+        let charIndex = 0;
+        const typewriterElement = document.getElementById('typewriterText');
+
+        function typeWriter() {
+            if (charIndex < messages[messageIndex].length) {
+                typewriterElement.textContent += messages[messageIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 50);
+            } else {
+                setTimeout(eraseText, 2500);
+            }
+        }
+
+        function eraseText() {
+            if (charIndex > 0) {
+                typewriterElement.textContent = messages[messageIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(eraseText, 30);
+            } else {
+                messageIndex = (messageIndex + 1) % messages.length;
+                setTimeout(typeWriter, 500);
+            }
+        }
+
+        // Start Typewriter on Load
+        window.onload = () => {
+            typeWriter();
+            createFloatingHearts();
+        };
+
+        function createFloatingHearts() {
+            const container = document.getElementById('heartContainer');
+            const heartIcons = ['fa-heart', 'fa-heart-pulse', 'fa-hand-holding-heart', 'fa-sparkles'];
+            
+            setInterval(() => {
+                const heart = document.createElement('i');
+                const randomIcon = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                
+                heart.className = `fa-solid ${randomIcon} heart-particle`;
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                heart.style.color = `hsl(${Math.random() * 30 + 330}, 100%, 75%)`;
+                
+                container.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 6000);
+            }, 400);
+        }
+
+        let escapeCount = 0;
+        function moveNoButton() {
+            const btn = document.getElementById('noBtn');
+            escapeCount++;
+
+            // Random positions within screen boundary
+            const x = Math.random() * (window.innerWidth - 120);
+            const y = Math.random() * (window.innerHeight - 60);
+
+            btn.style.position = 'fixed';
+            btn.style.left = `${Math.max(20, Math.min(x, window.innerWidth - 140))}px`;
+            btn.style.top = `${Math.max(20, Math.min(y, window.innerHeight - 80))}px`;
+            btn.style.zIndex = '999';
+
+            // Change text if attempted too many times
+            if (escapeCount === 3) {
+                btn.innerText = "Eits, gak bisa! 😜";
+            } else if (escapeCount === 6) {
+                btn.innerText = "Harus pilih Sayang! 💖";
+            } else if (escapeCount >= 9) {
+                btn.innerText = "Nyerah deh :p";
+            }
+        }
+
+        function handleYesClick() {
+            // Trigger Confetti Animation
+            confetti({
+                particleCount: 120,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+
+            // Change cute image GIF to happy kissing bear
+            document.getElementById('cuteGif').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmw0NXUzOG92Z3FrcmYxaTVldzU1bHZzMDVrd3JycTRkM244M3h6ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/K6vh5eCXy362A/giphy.gif";
+
+            // Hide question section and show secret notes
+            document.getElementById('questionBox').classList.add('hidden');
+            document.getElementById('secretSection').classList.remove('hidden');
+
+            // Show Popup Modal
+            openModal();
+        }
+
+        function openModal() {
+            const modal = document.getElementById('loveModal');
+            const card = document.getElementById('modalCard');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            card.classList.remove('scale-90');
+            card.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('loveModal');
+            const card = document.getElementById('modalCard');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            card.classList.remove('scale-100');
+            card.classList.add('scale-90');
+
+            // Play Music after user interaction
+            playMusicAndLove();
+        }
+
+        function playMusicAndLove() {
+            const audio = document.getElementById('bgMusic');
+            audio.play().catch(e => console.log("Audio play blocked by browser policy"));
+
+            confetti({
+                particleCount: 50,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 }
+            });
+            confetti({
+                particleCount: 50,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 }
+            });
+        }
+    </script>
+</body>
+</html>
